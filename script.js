@@ -55,9 +55,10 @@ function playFrame2() {
   const mm = gsap.matchMedia();
   mm.add({ isMobile: "(max-width: 767px)", isTablet: "(min-width: 768px) and (max-width: 1024px)", isDesktop: "(min-width: 1025px)" }, (context) => {
     const { isMobile, isTablet, isDesktop } = context.conditions;
-    const productX = isMobile ? -20 : isTablet ? -30 : "-8vw";
+    const productX = isMobile ? -20 : isTablet ? -30 : "-10vw";
     const textY = isMobile ? 8 : isTablet ? 10 : "45vw";
     const tl = gsap.timeline({ onComplete: handleCollapseFull });
+    // const tl = gsap.timeline();
     tl.to(".frame1-text", { opacity: 0, duration: 0.5, ease: "power2.out" })
       .to(".frame1-cta", { opacity: 0, duration: 0.5, ease: "power2.out" },'<')
       .to(".real-img", { x: productX, duration: 0.6, ease: "power2.out" })
@@ -103,18 +104,18 @@ function triggerEffect(x, y) {
     spawnOranges(x, y);
 }
 const steps = [
-    { clip: 15, bgOpacity: 0.8,  sunOpacity: 0.8,  heatOpacity: 0.2 },
-    { clip: 27, bgOpacity: 0.83,  sunOpacity: 0.7,  heatOpacity: 0.1 },
-    { clip: 34, bgOpacity: 0.72,  sunOpacity: 0.6,  heatOpacity: 0.08},
-    { clip: 41, bgOpacity: 0.6,  sunOpacity: 0.5,  heatOpacity: 0.06},
-    { clip: 49, bgOpacity: 0.54,  sunOpacity: 0.4,  heatOpacity: 0.04},
-    { clip: 56, bgOpacity: 0.46, sunOpacity: 0.35, heatOpacity: 0.02 },
-    { clip: 63, bgOpacity: 0.4,  sunOpacity: 0.3,  heatOpacity: 0.01 },
-    { clip: 69, bgOpacity: 0.35, sunOpacity: 0.25, heatOpacity: 0.005},
-    { clip: 76, bgOpacity: 0.28,  sunOpacity: 0.2,  heatOpacity: 0},
-    { clip: 87, bgOpacity: 0.20, sunOpacity: 0.15, heatOpacity: 0},
-    { clip: 95, bgOpacity: 0.15, sunOpacity: 0.12, heatOpacity: 0},
-    { clip: 100, bgOpacity: 0.14, sunOpacity: 0.11, heatOpacity: 0},
+    { clip: 15, bgOpacity: 0.9,  sunOpacity: 0.8,  heatOpacity: 0.2 },
+    { clip: 27, bgOpacity: 0.83,  sunOpacity: 0.7,  heatOpacity: 0.1},
+    { clip: 34, bgOpacity: 0.77,  sunOpacity: 0.6,  heatOpacity: 0.08},
+    { clip: 41, bgOpacity: 0.72,  sunOpacity: 0.5,  heatOpacity: 0.06},
+    { clip: 49, bgOpacity: 0.69,  sunOpacity: 0.4,  heatOpacity: 0.04},
+    { clip: 56, bgOpacity: 0.63, sunOpacity: 0.35, heatOpacity: 0.02},
+    { clip: 63, bgOpacity: 0.59,  sunOpacity: 0.3,  heatOpacity: 0.01 },
+    { clip: 69, bgOpacity: 0.53, sunOpacity: 0.25, heatOpacity: 0.005},
+    { clip: 76, bgOpacity: 0.48,  sunOpacity: 0.2,  heatOpacity: 0},
+    { clip: 87, bgOpacity: 0.41, sunOpacity: 0.15, heatOpacity: 0},
+    { clip: 95, bgOpacity: 0.35, sunOpacity: 0.12, heatOpacity: 0},
+    { clip: 100, bgOpacity: 0.3, sunOpacity: 0.11, heatOpacity: 0},
 ];
 const TOTAL_STEPS = steps.length;
 let idleTimer = null;
@@ -134,7 +135,7 @@ function startIdleTimer() {
 }
 function autoCompleteSteps() {
     if (step >= TOTAL_STEPS) return;
-    const { clip, bgOpacity, sunOpacity, heatOpacity } = steps[step];
+    const { clip, bgOpacity, sunOpacity, heatOpacity} = steps[step];
     step++;
     cover.style.clipPath = `inset(0% 0% ${clip}% 0%)`;
     bg.style.opacity = bgOpacity;
@@ -152,7 +153,7 @@ function autoCompleteSteps() {
 function handleReveal(e) {
     if (step >= TOTAL_STEPS) return;
     clearIdleTimer();
-    const { clip, bgOpacity, sunOpacity, heatOpacity } = steps[step];
+    const { clip, bgOpacity, sunOpacity, heatOpacity, bgBlur} = steps[step];
     step++;
     cover.style.clipPath = `inset(0% 0% ${clip}% 0%)`;
     bg.style.opacity = bgOpacity;
@@ -163,9 +164,9 @@ function handleReveal(e) {
         document.body.removeEventListener("click", handleReveal);
         setTimeout(playFrame2, 500);
     }
-    // else {
-    //      startIdleTimer();
-    // }
+    else {
+         startIdleTimer();
+    }
     handleSplash();
 }
 function playSunflare(){
@@ -185,7 +186,7 @@ function frame1Start() {
     gsap.to('.heat',{opacity:1,duration:0.8,ease:'power2.in'})
     const f1Start = gsap.timeline({delay:2, onComplete:function(){
         document.body.addEventListener("click", handleReveal);
-        // startIdleTimer();
+        startIdleTimer();
     }});
     f1Start.to('.reveal-wrap',{opacity:1,duration:0.5,ease:'power2.out'})
     .to('.frame1-text',{opacity:1,duration:0.5,ease:'power2.out'})
@@ -198,7 +199,7 @@ function handleSplash(){
   const cy = rect.height / 2;
 
   // randomize every click
-  const size  = 250 + Math.random() * 160;      // 180–340px
+  const size  = 320 + Math.random() * 160;      // 180–340px
   const rot   = Math.random() * 360;             // random rotation
   const flipX = Math.random() < 0.5 ? -1 : 1;   // horizontal mirror
   const flipY = Math.random() < 0.3 ? -1 : 1;   // occasional vertical flip
@@ -208,8 +209,8 @@ function handleSplash(){
   img.className = 'splash';
   img.style.width  = size + 'px';
   img.style.height = size + 'px';
-  img.style.left = (cx - size/2 + (Math.random()-0.5)*80) + 'px'
-  img.style.top    = Math.random(cy - size / 2) + 'px';
+  img.style.left = Math.random(cy - size / 2) + 'px';
+  img.style.top  = Math.random(cy - size / 2) + 'px';
   img.style.setProperty('--t', `rotate(${rot}deg) scale(${flipX}, ${flipY})`);
   img.style.setProperty('--dur', dur + 's');
 

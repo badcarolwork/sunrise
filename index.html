@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <title>Sunrise Animation</title>
     <style>
       body {
@@ -27,9 +27,16 @@
         background-repeat: repeat-x;
         background-size: auto 100%;
         background-position: top center;
-        z-index: 1;
-        transition: opacity 0.4s ease-out;
+        z-index: 2;
+        transition:
+          opacity 0.4s ease-out,
+          filter 0.4s ease-out;
         inset: 0;
+      }
+      .bg-white {
+        background-color: #000;
+        position: absolute;
+        z-index: 1;
       }
       .cloud {
         position: absolute;
@@ -38,7 +45,7 @@
         background-repeat: no-repeat;
         background-size: 100% auto;
         background-position: bottom center;
-        z-index: 2;
+        z-index: 3;
       }
       .stage {
         position: absolute;
@@ -47,7 +54,7 @@
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        z-index: 3;
+        z-index: 4;
         cursor: pointer;
       }
       .scene {
@@ -167,9 +174,9 @@
         height: auto;
         max-width: 500px;
         opacity: 0;
-        transform: translateY(10px);
         margin: auto;
-        transform: translateX(0)
+        top: 30%;
+        left: 48%;
       }
       .frame2-text2 {
         position: absolute;
@@ -178,7 +185,8 @@
         max-width: 500px;
         opacity: 0;
         margin: auto;
-        transform: translateX(0)
+        top: 30%;
+        left: 48%;
       }
       #catfish {
         width: 100vw;
@@ -292,12 +300,12 @@
       }
       #splash-container {
         width: 40vw;
-        height: 40vh;
-        position: relative;
+        height: 100%;
+        position: absolute;
         margin: auto;
         left: 0;
         right: 0;
-        top: -40vh;
+        top: 0;
         z-index: 3;
         pointer-events: none;
         max-width: 400px;
@@ -322,11 +330,38 @@
           transform: var(--t) scale(1.15);
         }
       }
+      @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+        .reveal-wrap {
+          width: clamp(120px, 15vw, 260px);
+        }
+        .sun {
+          width: clamp(180px, 39%, 380px);
+        }
+        .frame2-text1,
+        .frame2-text2 {
+          width: clamp(180px, 40%, 400px);
+        }
+      }
+      @media (-webkit-max-device-pixel-ratio: 1.0), (max-resolution: 96dpi) {
+        .reveal-wrap {
+          width: 25vw;
+          max-width: 325px;
+          max-height: 597px;
+        }
+        .sun {
+          width: 40vw;
+          max-width:600px;
+        }
+        .frame2-text1,
+        .frame2-text2 {
+          max-width: 620px;
+        }
+      }
     </style>
   </head>
   <body>
     <script src="https://cdn.flashtalking.com/frameworks/js/api/2/10/html5API.js"></script>
-
+    <div class="bg-white"></div>
     <div class="bg"></div>
     <div class="heat"></div>
     <svg class="heat-svg">
@@ -351,12 +386,13 @@
             </div>
             <img src="frame1-text.png" class="frame1-text" />
             <img class="frame1-cta" src="frame1-tap.png" />
+            <div id="splash-container"></div>
           </div>
           <!-- <div class="reveal-wrap" id="revealBox">
             <img src="hide-product.png" class="hide-product cover" />
             <img src="product.png" class="real-img" />
           </div> -->
-          <div id="splash-container"></div>
+
           <!-- <img src="frame1-text.png" class="frame1-text" /> -->
           <!-- <img class="frame1-cta" src="frame1-tap.png" /> -->
           <img src="frame2-text1.png" class="frame2-text1" />
