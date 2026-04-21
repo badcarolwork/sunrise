@@ -208,7 +208,7 @@ function handleSplash(){
   img.className = 'splash';
   img.style.width  = size + 'px';
   img.style.height = size + 'px';
-  img.style.left   = Math.random(cx - size / 2) + 'px';
+  img.style.left = (cx - size/2 + (Math.random()-0.5)*80) + 'px'
   img.style.top    = Math.random(cy - size / 2) + 'px';
   img.style.setProperty('--t', `rotate(${rot}deg) scale(${flipX}, ${flipY})`);
   img.style.setProperty('--dur', dur + 's');
